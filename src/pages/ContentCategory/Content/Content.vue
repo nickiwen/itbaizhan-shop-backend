@@ -36,10 +36,10 @@
         >
             <span>
                 <el-form ref="form" :model="form" label-width="80px">
-                    <el-form-item label="内容标题">
+                    <el-form-item label="标题">
                         <el-input v-model="form.title"></el-input>
                     </el-form-item>
-                    <el-form-item label="内容子标题">
+                    <el-form-item label="子标题">
                         <el-input
                             v-model="form.subTitle"
                             type="textarea"
@@ -47,7 +47,7 @@
                             placeholder="请输入内容"
                         ></el-input>
                     </el-form-item>
-                    <el-form-item label="内容描述">
+                    <el-form-item label="描述">
                         <el-input
                             v-model="form.content"
                             type="textarea"
