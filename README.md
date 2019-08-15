@@ -1,4 +1,4 @@
-# egoshop
+# 百战商城后台系统
 
 ## Project setup
 ```
@@ -7,7 +7,7 @@ npm install
 
 ### Compiles and hot-reloads for development
 ```
-npm run serve
+npm run dev
 ```
 
 ### Compiles and minifies for production
@@ -15,15 +15,7 @@ npm run serve
 npm run build
 ```
 
-### Run your tests
-```
-npm run test
-```
+### Knowledge point
+Vue + VueX + Element-UI + Axios
 
-### Lints and fixes files
-```
-npm run lint
-```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
