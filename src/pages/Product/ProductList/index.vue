@@ -34,6 +34,7 @@
                 </template>
             </el-table-column>
         </el-table>
+        <div v-else>{{ timeoutMsg }}</div>
         <!-- 添加商品弹出框 -->
         <div class="add-dialog">
             <el-dialog
@@ -149,6 +150,7 @@ export default {
             productUploadVisible: false, // 商品上传图片对话框
             addDialogVisible: false, // 添加商品对话框
             paramsData:[],  // 规格参数数组
+            timeoutMsg:"", // 数据获取失败的提示
             // 商品对象
             product: {},
             paramsGroup:{}, // 规格参数自选项数据
@@ -186,6 +188,7 @@ export default {
                     this.productData = res.data.data.result;
                 } else {
                     console.log("请求失败");
+                    this.timeoutMsg = res.data;
                 }
             });
         },
