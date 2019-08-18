@@ -38,11 +38,12 @@
         <!-- 添加商品弹出框 -->
         <div class="add-dialog">
             <el-dialog
-                title="添加商品"
+                title="编辑商品"
                 :visible.sync="addDialogVisible"
                 width="80%"
                 :before-close="handleClose"
             >
+                <div>{{ preUpdaetMsg }}</div>
                 <el-form ref="form" :model="product" label-width="80px">
                     <el-form-item label="商品类目">
                         <el-button
@@ -139,21 +140,22 @@
 <script>
 import ProdcutUpload from "../ProductUpload";
 import ProdcutPagination from "../ProductPagination";
-import { setParams } from "../../../utils/params"
+import { setParams } from "../../../utils/params";
 
 export default {
     name: "ProductList",
     data() {
         return {
             productData: [],
+            preUpdaetMsg: "", // 预更新信息提示
             productCategoryVisible: false, // 商品类目对话框
             productUploadVisible: false, // 商品上传图片对话框
             addDialogVisible: false, // 添加商品对话框
-            paramsData:[],  // 规格参数数组
-            timeoutMsg:"", // 数据获取失败的提示
+            paramsData: [], // 规格参数数组
+            timeoutMsg: "", // 数据获取失败的提示
             // 商品对象
             product: {},
-            paramsGroup:{}, // 规格参数自选项数据
+            paramsGroup: {}, // 规格参数自选项数据
             updateFlagid: "",
             currentCategory: {}, // 当前选择商品类目
             // uedite配置
@@ -185,10 +187,13 @@ export default {
         http() {
             this.$api.prodcutList({ page: 1 }).then(res => {
                 if (res.data.status === 200) {
-                    this.productData = res.data.data.result;
+                    if (res.data.data.result) {
+                        this.productData = res.data.data.result;
+                    } else {
+                        this.timeoutMsg = res.data.data;
+                    }
                 } else {
                     console.log("请求失败");
-                    this.timeoutMsg = res.data;
                 }
             });
         },
@@ -199,10 +204,14 @@ export default {
             // 预更新
             this.$api.getPreUpdateItem({ itemId: row.id }).then(res => {
                 if (res.data.status === 200) {
-                    this.currentCategory.name = res.data.data.itemCat;
-                    this.product = res.data.data.item;
-                    this.product.desc = res.data.data.itemDesc;
-                    this.uploadData.data = res.data.data.item.image;
+                    if (res.data.data.itemCat) {
+                        this.currentCategory.name = res.data.data.itemCat;
+                        this.product = res.data.data.item;
+                        this.product.desc = res.data.data.itemDesc;
+                        this.uploadData.data = res.data.data.item.image;
+                    }else{
+                        this.preUpdaetMsg = res.data.data;
+                    }
                 } else {
                     alert("预更新失败");
                 }
@@ -275,7 +284,8 @@ export default {
                     });
             } else {
                 // 提交
-                this.$api.insertTbItem({
+                this.$api
+                    .insertTbItem({
                         cid: this.currentCategory.id,
                         title: this.product.title,
                         sellPoint: this.product.sellPoint,
@@ -283,7 +293,9 @@ export default {
                         num: this.product.num,
                         desc: this.product.desc,
                         image: this.uploadData.data,
-                        itemParams:encodeURIComponent(setParams(this.paramsData,this.paramsGroup))
+                        itemParams: encodeURIComponent(
+                            setParams(this.paramsData, this.paramsGroup)
+                        )
                     })
                     .then(res => {
                         if (res.data.status !== 200) {
@@ -350,17 +362,18 @@ export default {
             this.currentCategory = "";
         },
         /* 添加产品规格参数 */
-        getParamsHandler(){
-            this.$api.getGroupParamData({id:this.currentCategory.id})
-            .then(res => {
-                if(res.data.status === 200){
-                    this.productCategoryVisible = false;
-                    console.log(res.data.data.paramData);
-                    this.paramsData = JSON.parse(res.data.data.paramData)
-                }else{
-                    alert("规格参数不存在")
-                }
-            })
+        getParamsHandler() {
+            this.$api
+                .getGroupParamData({ id: this.currentCategory.id })
+                .then(res => {
+                    if (res.data.status === 200) {
+                        this.productCategoryVisible = false;
+                        console.log(res.data.data.paramData);
+                        this.paramsData = JSON.parse(res.data.data.paramData);
+                    } else {
+                        alert("规格参数不存在");
+                    }
+                });
         },
         /* 上传图片事件 */
         uploadHandler() {

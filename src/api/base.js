@@ -1,7 +1,7 @@
 const base = {
     baseUrl:"/api",
-    basePrductUrl:"/product_api",
-    baseContentUrl:"/content_api",
+    basePrductUrl:"/product_api/backend_item",
+    baseContentUrl:"/content_api/backend_content",
     login:"/api/login",              // 登陆地址
     prodcutList:"/backend/item/selectTbItemAllByPage", // 商品列表地址
     selectItemCategoryByParentId:"/backend/itemCategory/selectItemCategoryByParentId", // 类目选择地址
