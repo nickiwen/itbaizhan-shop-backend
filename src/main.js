@@ -5,7 +5,7 @@ import store from './store'
 import './plugins/element.js'
 import "./assets/css/reset.css"
 import api from "./api"
-import "./router/Permission"
+// import "./router/Permission"
 import Storage from "./utils/Storage"
 import VueUeditorWrap from 'vue-ueditor-wrap'
 

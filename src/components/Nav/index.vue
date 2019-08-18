@@ -23,10 +23,10 @@
                         内容分类管理
                     </router-link>
                 </div>
-                <div>
+                <!-- <div>
                     <span class="nick">iwen</span>
                     <el-button type="info" @click="logOutHandler" plain>退出</el-button>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
